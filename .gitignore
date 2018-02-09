@@ -1,0 +1,9 @@
+.DS_Store
+.htaccess
+*.map
+node_modules
+./projects.json
+/test
+/session_files
+/logs
+

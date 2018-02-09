@@ -1,0 +1,25 @@
+{
+  "name": "multihawker",
+  "version": "1.0.0",
+  "description": "simple multifunctional worker to throw out billion node packages and workarounds build systems. fuck webpack, gulp, grund.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node -r @std/esm index.js"
+  },
+  "keywords": [
+    "build",
+    "bash",
+    "service"
+  ],
+  "author": "Constantine Dobrovolskiy",
+  "license": "ISC",
+  "dependencies": {
+    "@std/esm": "^0.20.0",
+    "less": "^2.7.3",
+    "rollup": "^0.55.3"
+  },
+  "@std/esm": "js"
+}
