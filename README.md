@@ -23,7 +23,8 @@ Mutihawker requires few system libraries to convert images and videos. If you wa
 1. Go to your project folder
 2. Create multihawker.js file
 3. Write your awesome scripts
-4. Open your terminal *in project folder*
+4. Open your terminal
+5. Run multihawker **from project folder**
 5. Write path to multihawker folder. Multihawker going to find script file, evaluate and run it.
 ```
 ./path/to/multihawker/multihawker.sh

@@ -19,7 +19,7 @@ class Less {
         this.output = output;
         this.includes = includes;
         this.options = {
-            paths: [this.includes]
+            // paths: [this.includes]
             // filename: 'style.less' // Specify a filename, for better error messages
         };
     }
@@ -38,7 +38,7 @@ class Less {
     render(name, filePath) {
         var options;
         var ff;
-        if (path.relative(filePath, this.includes).length == 0) return this.first() 
+        //if (path.relative(filePath, this.includes).length == 0) return this.first() 
 
         filePath = path.join(filePath, name);
         options = this.options;
@@ -47,7 +47,9 @@ class Less {
         if (fs.statSync(filePath).isFile()) {
             ff = fs.readFileSync(filePath, 'utf8');
 
-            less.render(ff, options)
+            less.render(ff, {
+                filename: path.resolve(filePath)
+            })
                 .then((css) => {
                     //console.log(consolecolors.fg.Yellow, `${name} is rendering...`, consolecolors.Reset);
                     this.writeFile(path.basename(name, path.extname(name)), css);
@@ -56,6 +58,9 @@ class Less {
         };
     };
     first() {
+        if (fs.statSync(this.root).isFile()) {
+            return this.render(this.root, '');
+        };
         fs.readdirSync(this.root).forEach(file => {
             var filePath = path.join(this.root, file);
             var stat = fs.statSync(filePath);

@@ -9,6 +9,7 @@ import { Images } from './modules/class.images'
 import { Videos } from './modules/class.videos'
 import { Less } from './modules/class.less'
 import { Templates } from './modules/class.templates'
+import { Clone } from './modules/class.clone'
 import consolecolors from './modules/module.consolecolors'
 
 const exec = cp.exec;
@@ -16,38 +17,53 @@ var project;
 var filePath;
 var content;
 
-if (process.argv.indexOf('-t') != -1) {
+function stateSingleBashTask() {
     var argv = process.argv.slice(process.argv.indexOf('-t') + 1, process.argv.length);
     var task = argv.shift();
-    var args = argv.join(' ') //add project path process.argv[process.argv.indexOf('-p') + 1]
+    var projectPath = process.argv[2]; //0 - is node path, 1 - current script path, 2 - project path ... - other args
+
+    //replacing relative paths with full paths
+    argv.forEach((el, i) => {
+        if (el.indexOf('./') >= 0) argv[i] = projectPath + '/' + el.split('./')[1];
+    });
+    argv = argv.join(' ');
     
-    console.log(`${process.cwd()}/modules/bash/${task}.sh ${args}`);
-    //exec(`${process.cwd()}/modules/bash/${task}.sh ${args}`, (error, stdout, stderr) => console.log(stdout));
-    process.exit(0);
+    exec(`${process.cwd()}/modules/bash/${task}.sh ${argv}`, (error, stdout, stderr) => console.log(stdout));
 };
 
-if (process.argv.indexOf('-p') == -1) {
-    console.log('Project is not specified. Use:');
-    console.log('npm run start -p /path/to/project');
-    process.exit(1);
+function stateNodeScript() {
+    exec(process.cwd() + '/modules/bash/logo.sh', (error, stdout, stderr) => console.log(stdout));
+
+    project = process.argv.indexOf('-p') >= 0 ? process.argv[process.argv.indexOf('-p') + 1] : process.argv[2];
+    console.log('----' + project.replace(/./g, "-"));
+    console.log('| ' + project + ' |')
+    console.log('----' + project.replace(/./g, "-"));
+    console.log('');
+
+    filePath = path.join(project, 'multihawker.js');
+    content = fs.readFileSync(filePath, 'utf8');
+
+    try {
+        eval(content);
+    } catch (error) {
+        console.log(consolecolors.fg.Red, error, consolecolors.Reset);
+        process.exit(1);
+    };
 };
 
-exec(process.cwd() + '/modules/bash/logo.sh', (error, stdout, stderr) => console.log(stdout));
+function stateHelp() {
+    exec(process.cwd() + '/modules/bash/help.sh', (error, stdout, stderr) => console.log(stdout));
+};
 
-project = process.argv[process.argv.indexOf('-p') + 1];
-console.log('----' + project.replace(/./g, "-"));
-console.log('| ' + project + ' |')
-console.log('----' + project.replace(/./g, "-"));
-console.log('');
-
-filePath = path.join(project, 'multihawker.js');
-content = fs.readFileSync(filePath, 'utf8');
-
-try {
-    eval(content);
-} catch (error) {
-    console.log(consolecolors.fg.Red, error, consolecolors.Reset);
-    process.exit(1);
+if (process.argv.indexOf('-t') >= 0) {
+    stateSingleBashTask();
+} 
+else if (process.argv.indexOf('--help') >= 0) {
+    stateHelp();
+}
+else {
+//if (process.argv.indexOf('-p') >= 0) {
+    stateNodeScript();
 };
 
 //var rp = new Rollup('./test/src/js', './test/html/js', ['sihred.js', 'index.js', 'main.js', 'chibitactics.js']);

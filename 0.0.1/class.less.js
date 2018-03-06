@@ -19,7 +19,7 @@ class Less {
         this.output = output;
         this.includes = includes;
         this.options = {
-            paths: [this.includes]
+            //paths: [this.includes]
             // filename: 'style.less' // Specify a filename, for better error messages
         };
     }
@@ -47,7 +47,9 @@ class Less {
         if (fs.statSync(filePath).isFile()) {
             ff = fs.readFileSync(filePath, 'utf8');
 
-            less.render(ff, options)
+            less.render(ff, {
+                filename: path.resolve(filePath)
+            })
                 .then((css) => {
                     //console.log(consolecolors.fg.Yellow, `${name} is rendering...`, consolecolors.Reset);
                     this.writeFile(path.basename(name, path.extname(name)), css);

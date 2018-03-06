@@ -1,0 +1,7 @@
+echo "Usage: mutihawker [OPTION]..."
+echo "Run multihawker script in your directory."
+echo "Or specific Bash scripts."
+echo ""
+echo "-p    Project folder where multihawker.js file is already created"
+echo "-t    Execute one of multihawker Bash scripts"
+echo "      Usage: -t [taskname] [OPTIONS]"

@@ -4,9 +4,14 @@
 multihawker=$0
 project=$PWD
 
-if [ ! -f $project/multihawker.js ]; then
-    echo "multihawker.js not found in project folder!"
-    exit 1
-fi
+
 cd $(dirname $0)
-npm run start -- -p $project $@
+if [ "$1" == "" ]; then
+    if [ ! -f $project/multihawker.js ]; then
+        echo "multihawker.js not found in project folder!"
+        exit 1
+    fi
+    npm run start -- -p $project $@
+    exit 0
+fi
+npm run start -- $project $@
