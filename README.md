@@ -69,3 +69,105 @@ Simply copying files using cp utility. Allows to use wildcards in paths.
 ```
 ./path/to/multihawker/multihawker.sh clone ./folder_to file1 file2.* ./folder/*.png ... fileN
 ```
+## Example multihawker.js file
+
+```js
+/*
+Write your automation in this file. You can manipulate multihawker tasks from * this file. Or you can simply write js or es6 code here and work with your 
+files.
+*/
+
+var root = '/path/to/project';
+//you can pass additional keys to js file
+var projectName = process.argv[process.argv.indexOf('-c') + 1];
+//input
+var from = (pth) => path.join(root, 'src', projectName, pth);
+//output
+function to(pth) {
+    var dirPath = path.join(root, 'html', projectName, pth);
+    ensureDirectoryExistence(dirPath);
+    return dirPath
+};
+//fuction to create folders if doesnt exist
+function ensureDirectoryExistence(dirPath) {
+    var dirname = path.dirname(dirPath);
+    if (fs.existsSync(dirname)) {
+        return true;
+    };
+    ensureDirectoryExistence(dirname);
+    fs.mkdirSync(dirname);
+};
+
+/*
+js task.
+It is use Rollup to bundle es6 files with imports and put it into output folder with `to` function
+*/
+function js() {
+    var rollup = new Rollup(
+        from('/js/app'), 
+        to('/js'), 
+        ['main.js', 'main/']
+    );
+    var rollupWatch = new Watcher(
+        from('/js'), 
+        from('/js'), 
+        (cb) => rollup.build()
+    );
+    rollup.build();
+    rollupWatch.run();
+};
+
+function css() {
+    var less = new Less(
+        from('/less/main.less'), 
+        to('/css')
+    );
+    var lessMain = new Less(
+        from('/less/main/'), 
+        to('/css')
+    );
+    var lessWatch = new Watcher(
+        from('/less'), 
+        from('/less'), 
+        (cb) => less.render(cb[2], cb[0]));
+    less.first();
+    lessMain.first();
+    lessWatch.run();
+};
+
+function tpl() {
+    var tpl = new Templates(
+        from('/html'), 
+        to('/'), 
+        from('/html/includes')
+    );
+    var tplWatch = new Watcher(
+        from('/html'), 
+        from('/html'), 
+        (cb) => tpl.render(cb[2], cb[0])
+    );
+    tpl.first();
+    tplWatch.run();
+};
+
+function clone() {
+    var cloneFonts = new Clone(
+        [
+            path.join(root, 'src', 'vendor/material-design-icons/iconfont/MaterialIcons-Regular.eot'),
+            path.join(root, 'src', 'vendor/material-design-icons/iconfont/MaterialIcons-Regular.woff'),
+            path.join(root, 'src', 'vendor/material-design-icons/iconfont/MaterialIcons-Regular.woff2'),
+            path.join(root, 'src', 'vendor/material-design-icons/iconfont/MaterialIcons-Regular.ttf'),
+            path.join(root, 'src', 'vendor/roboto-fontface-bower/fonts/roboto/*')
+        ],
+        to('/css/fonts/')
+    );
+    //create all folders if doesnt exist
+    to('/css/fonts/*')
+    cloneFonts.run();
+};
+
+clone();
+js();
+css();
+tpl();
+```
