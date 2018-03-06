@@ -21,7 +21,6 @@ function ensureDirectoryExistence(dirPath) {
 function include(name, newData, filePath) {
     filePath = path.join(filePath || privateIncludes, name + '.html');
     tpl = '`' + fs.readFileSync(filePath, 'utf8') + '`';
-    console.log(consolecolors.fg.Yellow, '\nincluding: ' + filePath, consolecolors.Reset);
     try {
         return eval(tpl);
     } catch (error) {
@@ -45,7 +44,6 @@ class Templates {
         if (!fs.existsSync(filePath)) {
             ensureDirectoryExistence(filePath);
         };
-        console.log(consolecolors.fg.Yellow, '\nwriting: ' + filePath, consolecolors.Reset);
         fs.writeFileSync(filePath, tplFile, function (err) {
             if (error) {
                 return console.log(consolecolors.fg.Red, error, consolecolors.Reset);
@@ -57,7 +55,6 @@ class Templates {
         var template;
         if (path.relative(filePath, this.includes).length == 0) return this.first()
         name = path.basename(name, path.extname(name));
-        console.log(consolecolors.fg.Yellow, '\nloading: ' + filePath + '/' + name, consolecolors.Reset);
         template = include(name, data, filePath);
         this.writeFile(name, template);
     };
@@ -66,7 +63,7 @@ class Templates {
         fs.readdirSync(this.root).forEach(file => {
             var filePath = path.join(this.root, file);
             var stat = fs.statSync(filePath);
-
+            console.log(consolecolors.fg.Yellow, 'render: ' + filePath, consolecolors.Reset);
             if (stat.isFile()) {
                 this.render(file, this.root);
             };

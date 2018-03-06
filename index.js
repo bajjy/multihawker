@@ -32,8 +32,6 @@ function stateSingleBashTask() {
 };
 
 function stateNodeScript() {
-    exec(process.cwd() + '/modules/bash/logo.sh', (error, stdout, stderr) => console.log(stdout));
-
     project = process.argv.indexOf('-p') >= 0 ? process.argv[process.argv.indexOf('-p') + 1] : process.argv[2];
     console.log('----' + project.replace(/./g, "-"));
     console.log('| ' + project + ' |')
@@ -56,27 +54,17 @@ function stateHelp() {
 };
 
 if (process.argv.indexOf('-t') >= 0) {
-    stateSingleBashTask();
+    exec(process.cwd() + '/modules/bash/logo.sh', (error, stdout, stderr) => console.log(stdout));
+    setTimeout(() => stateSingleBashTask(), 500);
 } 
 else if (process.argv.indexOf('--help') >= 0) {
     stateHelp();
 }
 else {
 //if (process.argv.indexOf('-p') >= 0) {
-    stateNodeScript();
+    exec(process.cwd() + '/modules/bash/logo.sh', (error, stdout, stderr) => console.log(stdout));
+    setTimeout(() => stateNodeScript(), 500);
 };
-
-//var rp = new Rollup('./test/src/js', './test/html/js', ['sihred.js', 'index.js', 'main.js', 'chibitactics.js']);
-//rp.build();
-// var wt = new Watcher('./test', './test', (cb) => { console.log('+++++++++> ' + cb) }, './test/node_modules');
-// wt.run();
-// var wt = new Images('test', process.cwd() + '/test/src/images/', process.cwd() + '/test/html/');
-// wt.run();
-// var wt = new Videos('test', process.cwd() + '/test/src/video/', process.cwd() + '/test/html/video');
-// wt.run();
-
-// var lessModule = new Less('/mnt/c/Users/bajjy/www/multihawker/test', '/html/css', '/includes');
-// lessModule.first();
 
 export {
     Rollup,

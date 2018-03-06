@@ -28,7 +28,7 @@ class Less {
         if (!fs.existsSync(filePath)) {
             ensureDirectoryExistence(filePath);
         };
-        console.log(consolecolors.fg.Yellow, '\nwriting: ' + filePath, consolecolors.Reset);
+
         fs.writeFileSync(filePath, cssFile.css, function(err) {
             if (error) {
                 return console.log(consolecolors.fg.Red, error, consolecolors.Reset);
@@ -51,7 +51,6 @@ class Less {
                 filename: path.resolve(filePath)
             })
                 .then((css) => {
-                    //console.log(consolecolors.fg.Yellow, `${name} is rendering...`, consolecolors.Reset);
                     this.writeFile(path.basename(name, path.extname(name)), css);
                 },
                 (error) => console.log(consolecolors.fg.Red, error, consolecolors.Reset));
