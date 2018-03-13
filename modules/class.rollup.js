@@ -47,6 +47,9 @@ class Rollup {
             .catch(error => console.log(error));
     };
     first() {
+        if (fs.statSync(this.root).isFile()) {
+            return this.render(this.root, '');
+        };
         fs.readdirSync(this.root).forEach(file => {
             var filePath = path.join(this.root, file);
             var stat = fs.statSync(filePath);

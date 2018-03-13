@@ -16,6 +16,7 @@ Mutihawker requires few system libraries to convert images and videos. If you wa
 - pngquant
 - rsync
 - ffmpeg
+- imagemagick
 
 ## Node js
     ./install.nodejs.sh
@@ -39,7 +40,16 @@ npm run start -- -p /path/to/your_project
 
 ## Working with scripts
 Multihawker have some shit just out of the box. You can use it **without installing node and bunch of packages** any time you need.
+```
+Usage: mutihawker [OPTION]...
+Run multihawker script in your directory.
+Or specific Bash scripts.
 
+-p    Project folder where multihawker.js file is already created
+-t    Execute one of multihawker Bash scripts
+      Usage: -t [taskname] [OPTIONS]
+--help    show helpfile
+```
 multihawker.sh is middleware between **Nodejs** classes and bash scripts. However scritps could be straight from folder:
 ```
 ./modules/
@@ -56,13 +66,18 @@ multihawker.sh is middleware between **Nodejs** classes and bash scripts. Howeve
 ### Images converter
 Shrink images with pngquant tool and put it to destination folder with rsync utility.
 ```
-./path/to/multihawker/multihawker.sh videofolder ./folder_or_file/to/convert ./folder/to/put/converted_files
+./path/to/multihawker/multihawker.sh -t imagefolder ./folder_or_file/to/convert ./folder/to/put/converted_files
 ```
 
 ### Video converter
 Prepare videos for web with ffmpeg. Creates -640 -1280 -1920 wide video from input and convert those to mp4 and webm.
 ```
-./path/to/multihawker/multihawker.sh videofolder ./folder_or_file/to/convert ./folder/to/put/converted_files
+./path/to/multihawker/multihawker.sh -t videofolder ./folder_or_file/to/convert ./folder/to/put/converted_files
+```
+### Sprites generator
+Convert video frames to png images than create folder called \"sprites\" with horizontal combined png's
+```
+./path/to/multihawker/multihawker.sh -t spritegenerator ./folder_or_file/to/convert ./folder/to/put/converted_files
 ```
 ### Clone tool
 Simply copying files using cp utility. Allows to use wildcards in paths.

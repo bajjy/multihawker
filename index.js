@@ -11,6 +11,7 @@ import { Less } from './modules/class.less'
 import { Templates } from './modules/class.templates'
 import { Clone } from './modules/class.clone'
 import consolecolors from './modules/module.consolecolors'
+import * as landing from './modules/module.landing'
 
 const exec = cp.exec;
 var project;
@@ -29,6 +30,20 @@ function stateSingleBashTask() {
     argv = argv.join(' ');
     
     exec(`${process.cwd()}/modules/bash/${task}.sh ${argv}`, (error, stdout, stderr) => console.log(stdout));
+};
+
+function stateSingleNodeTask() {
+    var script = process.argv[process.argv.indexOf('-s') + 1];
+    var projectPath = process.argv[2];
+
+    if (script.indexOf('./') >= 0) script = script.replace('./', projectPath + '/');
+
+    try {
+        eval(script);
+    } catch (error) {
+        console.log(consolecolors.fg.Red, error, consolecolors.Reset);
+        process.exit(1);
+    };
 };
 
 function stateNodeScript() {
@@ -56,7 +71,10 @@ function stateHelp() {
 if (process.argv.indexOf('-t') >= 0) {
     exec(process.cwd() + '/modules/bash/logo.sh', (error, stdout, stderr) => console.log(stdout));
     setTimeout(() => stateSingleBashTask(), 500);
-} 
+}
+else if (process.argv.indexOf('-s') >= 0) {
+    stateSingleNodeTask();
+}
 else if (process.argv.indexOf('--help') >= 0) {
     stateHelp();
 }
