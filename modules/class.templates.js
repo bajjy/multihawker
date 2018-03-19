@@ -1,14 +1,17 @@
 import { default as path } from 'path'
 import { default as fs } from 'fs'
-
+import { Markdown } from './class.markdown'
 import consolecolors from './module.consolecolors'
 
 var tpl;
+var raw;
 var data;
 var privateRoot;
 var privateOutput;
 var privateIncludes;
-
+var middlewares = {
+    markdown: Markdown
+}
 function ensureDirectoryExistence(dirPath) {
     var dirname = path.dirname(dirPath);
     if (fs.existsSync(dirname)) {
@@ -18,9 +21,14 @@ function ensureDirectoryExistence(dirPath) {
     fs.mkdirSync(dirname);
 };
 
-function include(name, newData, filePath) {
+function include(name, newData, filePath, middleware) {
     filePath = path.join(filePath || privateIncludes, name + '.html');
-    tpl = '`' + fs.readFileSync(filePath, 'utf8') + '`';
+    raw = fs.readFileSync(filePath, 'utf8');
+    if (middleware && middlewares[middleware]) {
+        var mid = new middlewares[middleware](raw)
+        raw = mid.run(newData);
+    }
+    tpl = '`' + raw + '`';
     try {
         return eval(tpl);
     } catch (error) {

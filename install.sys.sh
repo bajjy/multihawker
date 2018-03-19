@@ -6,3 +6,4 @@ apt install pngquant
 apt install rsync
 apt install ffmpeg
 apt install imagemagick
+apt install pandoc
