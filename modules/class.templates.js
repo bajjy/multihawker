@@ -21,8 +21,9 @@ function ensureDirectoryExistence(dirPath) {
     fs.mkdirSync(dirname);
 };
 
-function include(name, newData, filePath, middleware) {
-    filePath = path.join(filePath || privateIncludes, name + '.html');
+function include(name, newData, filePath, middleware, fileWithExt) {
+    var ext = fileWithExt ? '' : '.html';
+    filePath = path.join(filePath || privateIncludes, name + ext);
     raw = fs.readFileSync(filePath, 'utf8');
     if (middleware && middlewares[middleware]) {
         var mid = new middlewares[middleware](raw)

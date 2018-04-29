@@ -11,7 +11,7 @@ fi
 
 folder=$1
 output=$2
-resolution=("1920" "1280" "640")
+resolution=("1920" "1280" "1024")
 quality=("5000k" "2500k" "180k")
 
 mkdir -p $output;

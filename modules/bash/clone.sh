@@ -10,4 +10,4 @@ fi
 
 to="$1"
 shift
-cp -t $to $@
+cp -R -t $to $@
