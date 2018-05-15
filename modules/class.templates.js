@@ -78,6 +78,41 @@ class Templates {
             };
         });
     };
+
+    regenerator(filePath) {
+        var stat = fs.statSync(filePath);
+        var json;
+        if (stat.isFile()) {
+            json = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        };
+        json.map(item => {
+            var data = item;
+            var tplPath = path.join(this.includes, data.tpl + '.html');
+            var template = fs.readFileSync(tplPath, 'utf8');
+            var filePath = path.join(this.root, `${data.url}.html`);
+            var outPath = path.join(this.output, `${data.url}.html`);
+
+            if (data.remove && fs.existsSync(outPath)) {
+                console.log(outPath)
+                return fs.unlinkSync(outPath)
+            };
+
+            if (!fs.existsSync(filePath)) {
+                ensureDirectoryExistence(filePath);
+            };
+            template = template.replace(/\$\{regenerateMeta\}/gi, JSON.stringify(data));
+            template = template.replace(/\$\{regenerateContent\}/gi, JSON.stringify(data.content));
+
+            
+
+            fs.writeFileSync(filePath, template, function (err) {
+                if (error) {
+                    return console.log(consolecolors.fg.Red, error, consolecolors.Reset);
+                }
+            });
+        })
+        
+    };
 };
 
 export {
