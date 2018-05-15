@@ -1,4 +1,4 @@
-![screenshot](https://photos-5.dropbox.com/t/2/AACu7gDIgdqRf4wl6P-8rqs8POppdnmpfnUkEjyLizeKaA/12/2191409/png/32x32/1/_/1/2/multihawker.png/EIv5gGoYAiACKAI/RtMyBj9eUYJoufsRMd02IBs65o8IL68UU-olO62qaTo?preserve_transparency=1&size=2048x1536&size_mode=3)
+![screenshot](http://bajjy.com/images/multihawker_logo.svg)
 
 Multihawker is simple DIY build system created with [ecmascript 6](http://www.ecma-international.org/ecma-262/6.0/). 
 Usually you neet two-three tools for comfortable work. Gulp, Webpack, Grunt those guys are completely waste. Everybody knows that `node_modules` is totally blackhole.
