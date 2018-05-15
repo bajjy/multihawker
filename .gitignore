@@ -6,4 +6,4 @@ node_modules
 /test
 /session_files
 /logs
-
+./package-lock.json
