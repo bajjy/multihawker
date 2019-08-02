@@ -1,7 +1,7 @@
 ![screenshot](http://bajjy.com/images/multihawker_logo.svg)
 
 Multihawker is simple DIY build system created with [ecmascript 6](http://www.ecma-international.org/ecma-262/6.0/). 
-Usually you neet two-three tools for comfortable work. Gulp, Webpack, Grunt those guys are completely waste. Everybody knows that `node_modules` is totally blackhole.
+Usually you need two-three tools for comfortable work. Gulp, Webpack, Grunt those guys are completely waste. Everybody knows that `node_modules` is totally blackhole.
 
 The goal of this project is to get rid of ton of needless packages, tools and libraries from questionable developers and other focktard files.
 Automate build of your project by yourself exectly as you need. Use SINGLE tool to all of your project. 
